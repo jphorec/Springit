@@ -1,6 +1,7 @@
 {
   "projectname": "SpringitTest",
   "company": "springit",
+  "resource": "test",
   "springtype": "boot",
   "backend": "mongodb"
 }

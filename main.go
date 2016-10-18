@@ -13,7 +13,7 @@ func main()  {
   }
   config := ConfigValues(buffer)
   fmt.Printf("Creating project directory %s...\n", config.Projectname)
-  project := NewProject(config.Projectname, config.SpringType)
+  project := NewProject(config.Projectname, config.SpringType, config.Company, config.Resource, config.Backend)
   CreateDirectories(project)
   fmt.Println(project)
 //  os.MkdirAll(config.Projectname, 0777)

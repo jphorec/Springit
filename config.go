@@ -8,6 +8,7 @@ import (
 type Config struct {
   Projectname string `json:projectname`
   Company string `json:company`
+  Resource string `json:resource`
   SpringType string `json:springtype`
   Backend string `json:backend`
 }
