@@ -46,7 +46,7 @@ func GetDirectories(s string) []string {
   return []string{}
 }
 
-func CreateDirectories(project Project) {
+func CreateDirectories(project Project, domain Domain) {
   os.MkdirAll(project.ProjectName, os.FileMode(project.Permissions))
   os.Chdir(project.ProjectName)
   // Create the pom file on each
@@ -63,13 +63,28 @@ func CreateDirectories(project Project) {
     if directory != "application" {
       // os.Chdir(directory)
       subProject := Project{ProjectName: project.ProjectName, SpringType: project.SpringType, Company: project.Company, Resource: project.Resource, Backend: project.Backend, Permissions: 0755, Directories: []string{directory}}
-      out, err := CreatePomXml(subProject, "../templates/poms/child_pom.xml")
-      ErrorCheck(err)
-      WriteToFile(out, directory + "/pom.xml")
+      pomOut, pomErr := CreatePomXml(subProject, "../templates/poms/child_pom.xml")
+      ErrorCheck(pomErr)
+      WriteToFile(pomOut, directory + "/pom.xml")
+      javaOut, javaErr := CreateDomainJavaFile(domain, "../templates/java/Domain.java")
+      ErrorCheck(javaErr)
+      WriteToFile(javaOut, directory + "/Domain.java")
       CreateJavaDir(subProject, directory)
     //  os.Chdir("../..")
     }
   }
+}
+func CreateDomainJavaFile(domain Domain, file string)(out []byte, error error){
+  var buf bytes.Buffer
+  t, err := template.ParseFiles(file)
+  if err != nil {
+    return nil, err
+  }
+  err = t.Execute(&buf, domain.Attributes)
+  if err != nil {
+    return nil, err
+  }
+  return buf.Bytes(), nil
 }
 
 func CreatePomXml(project Project, file string) (out []byte, error error){
