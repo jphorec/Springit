@@ -3,7 +3,7 @@ package main
 import(
   "os"
   "fmt"
-  "html/template"
+  "text/template"
   "bytes"
 )
 
@@ -49,6 +49,7 @@ func GetDirectories(s string) []string {
 func CreateDirectories(project Project, domain Domain) {
   os.MkdirAll(project.ProjectName, os.FileMode(project.Permissions))
   os.Chdir(project.ProjectName)
+  domain.ProjectName = project.ProjectName
   // Create the pom file on each
   out, err := CreatePomXml(project, "../templates/poms/pom.xml")
   ErrorCheck(err)
@@ -66,15 +67,21 @@ func CreateDirectories(project Project, domain Domain) {
       pomOut, pomErr := CreatePomXml(subProject, "../templates/poms/child_pom.xml")
       ErrorCheck(pomErr)
       WriteToFile(pomOut, directory + "/pom.xml")
-      javaOut, javaErr := CreateDomainJavaFile(domain, "../templates/java/Domain.java")
-      ErrorCheck(javaErr)
-      WriteToFile(javaOut, directory + fmt.Sprintf("/%s.java", domain.Table))
+      domainOut, domainErr := CreateJavaFile(domain, "../templates/java/Domain.java")
+      ErrorCheck(domainErr)
+      WriteToFile(domainOut, directory + fmt.Sprintf("/%s.java", domain.Table))
+      repoOut, repoErr := CreateJavaFile(domain, "../templates/java/Repository.java")
+      ErrorCheck(repoErr)
+      WriteToFile(repoOut, directory + fmt.Sprintf("/%sRepository.java", domain.Table))
+      ctrlOut, ctrlErr := CreateJavaFile(domain, "../templates/java/Controller.java")
+      ErrorCheck(ctrlErr)
+      WriteToFile(ctrlOut, directory + fmt.Sprintf("/%sController.java", domain.Table))
       CreateJavaDir(subProject, directory)
     //  os.Chdir("../..")
     }
   }
 }
-func CreateDomainJavaFile(domain Domain, file string)(out []byte, error error){
+func CreateJavaFile(domain Domain, file string)(out []byte, error error){
   var buf bytes.Buffer
   t, err := template.ParseFiles(file)
   if err != nil {

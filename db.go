@@ -60,6 +60,7 @@ func checkErr(err error) {
 }
 
 type Domain struct {
+    ProjectName   string    `json:"projectName"`
     Table      string `json:table`
     Attributes []DomainAttribute    `json:"attributes"`
 }

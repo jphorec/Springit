@@ -20,6 +20,7 @@ type DatabaseInfo struct {
     DBName string `json:dbName`
     DBTable string `json:dbTable`
     DBUrl string `json:dbUrl`
+    Projectname string
 }
 
 func ConfigValues(configContents []byte) Config {

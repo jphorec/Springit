@@ -1,4 +1,4 @@
-package com.thd.{{.Table}}.domain;
+package com.thd.{{.ProjectName}}.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
