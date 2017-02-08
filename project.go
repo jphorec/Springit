@@ -68,7 +68,7 @@ func CreateDirectories(project Project, domain Domain) {
       WriteToFile(pomOut, directory + "/pom.xml")
       javaOut, javaErr := CreateDomainJavaFile(domain, "../templates/java/Domain.java")
       ErrorCheck(javaErr)
-      WriteToFile(javaOut, directory + "/Domain.java")
+      WriteToFile(javaOut, directory + fmt.Sprintf("/%s.java", domain.Table))
       CreateJavaDir(subProject, directory)
     //  os.Chdir("../..")
     }
