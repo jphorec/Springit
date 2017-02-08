@@ -6,10 +6,10 @@
   "backend": "mongodb",
   "dbInfo": {
     "dbType": "postgres",
-    "dbUser": "joshhorecny",
+    "dbUser": "josh.horecny",
     "dbPassword": "",
-    "dbName": "basketballapp",
-    "dbTable": "player",
+    "dbName": "Demo",
+    "dbTable": "films",
     "dbUrl": "localhost"
   }
 }

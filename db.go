@@ -5,6 +5,7 @@ import (
     "fmt"
     _ "github.com/lib/pq"
     "encoding/json"
+    "strings"
 )
 
 func connect(databaseInfo DatabaseInfo) Domain {
@@ -20,6 +21,7 @@ func connect(databaseInfo DatabaseInfo) Domain {
     checkErr(err)
     domainModel := Domain{}
     domainModel.Table = databaseInfo.DBTable
+    domainModel.ClassName = strings.Title(domainModel.Table)
     for rows.Next() {
         var column_name string
         var ordinal_position int
@@ -27,7 +29,12 @@ func connect(databaseInfo DatabaseInfo) Domain {
         var udt_name string
         err = rows.Scan(&column_name, &ordinal_position, &is_nullable, &udt_name)
         checkErr(err)
-        domainModel.Attributes = append(domainModel.Attributes, DomainAttribute{column_name, getAttrType(udt_name), ordinal_position, getNullableFlag(is_nullable)})
+        attributeName := strings.ToLower(column_name)
+        if(strings.Contains(attributeName, "_")) {
+            words := strings.Split(attributeName, "_")
+            attributeName = words[0] + strings.Title(words[1]);
+        }
+        domainModel.Attributes = append(domainModel.Attributes, DomainAttribute{column_name, attributeName, "set" + strings.Title(attributeName), "get" + strings.Title(attributeName), getAttrType(udt_name), ordinal_position, getNullableFlag(is_nullable)})
     }
     jsonDomain,_ := json.Marshal(domainModel)
     fmt.Println(string(jsonDomain))
@@ -62,11 +69,15 @@ func checkErr(err error) {
 type Domain struct {
     ProjectName   string    `json:"projectName"`
     Table      string `json:table`
+    ClassName  string `json:className`
     Attributes []DomainAttribute    `json:"attributes"`
 }
 
 type DomainAttribute struct {
+    Column        string    `json:"column"`
     AttributeName string    `json:"attributeName"`
+    Setter string           `json:"setter"`
+    Getter   string         `json:getter`
     AttributeType string    `json:"attributeType"`
     AttributePosition int   `json:"attributePos"`
     CanBeNull bool          `json:"nullable"`

@@ -14,10 +14,10 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "{{.Table}}")
 @Data
-public class {{.Table}} implements Identifiable<String> {
+public class {{.ClassName}} implements Identifiable<String> {
 
 {{ range .Attributes }}
-    @Column(name = "{{.AttributeName}}")
+    @Column(name = "{{.Column}}")
     private {{.AttributeType}} {{.AttributeName}};
 {{ end }}
 
