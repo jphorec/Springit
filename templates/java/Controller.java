@@ -1,4 +1,4 @@
-package com.thd.{{.ProjectName}}.rest.controller;
+package com.{{.Company}}.{{.ProjectName}}.rest.controller;
 
 import com.thd.{{.ProjectName}}.domain.{{.Table}};
 import com.thd.{{.ProjectName}}.repository.{{.Table}}Repository;
