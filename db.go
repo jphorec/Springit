@@ -7,25 +7,19 @@ import (
     "encoding/json"
 )
 
-const (
-    DB_USER     = "postgres"
-    DB_PASSWORD = "password"
-    DB_NAME     = "basketballapp"
-    DB_URL      = "localhost"
-)
-
-func connect() Domain {
+func connect(databaseInfo DatabaseInfo) Domain {
     dbinfo := fmt.Sprintf("postgres://%s:%s@%s:/%s?sslmode=disable",
-        DB_USER, DB_PASSWORD, DB_URL, DB_NAME)
+        databaseInfo.DBUser, databaseInfo.DBPassword, databaseInfo.DBUrl, databaseInfo.DBName)
     db, err := sql.Open("postgres", dbinfo)
     checkErr(err)
     defer db.Close()
 
     fmt.Println("# Querying")
-    rows, err := db.Query("select column_name, ordinal_position, is_nullable, udt_name from INFORMATION_SCHEMA.COLUMNS where table_name = 'player'")
+    dbQuery := fmt.Sprintf("select column_name, ordinal_position, is_nullable, udt_name from INFORMATION_SCHEMA.COLUMNS where table_name = '%s'", databaseInfo.DBTable)
+    rows, err := db.Query(dbQuery)
     checkErr(err)
     domainModel := Domain{}
-
+    domainModel.Table = databaseInfo.DBTable
     for rows.Next() {
         var column_name string
         var ordinal_position int
@@ -55,7 +49,7 @@ func getAttrType(s string) string {
         return "Integer"
     case "varchar":
         return "String"
-    default: 
+    default:
         return "String"
     }
 }
@@ -66,8 +60,9 @@ func checkErr(err error) {
 }
 
 type Domain struct {
+    Table      string `json:table`
     Attributes []DomainAttribute    `json:"attributes"`
-} 
+}
 
 type DomainAttribute struct {
     AttributeName string    `json:"attributeName"`
@@ -75,4 +70,3 @@ type DomainAttribute struct {
     AttributePosition int   `json:"attributePos"`
     CanBeNull bool          `json:"nullable"`
 }
-

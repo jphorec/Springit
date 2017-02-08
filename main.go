@@ -12,7 +12,7 @@ func main()  {
     fmt.Print(err)
   }
   config := ConfigValues(buffer)
-  domain := connect();
+  domain := connect(config.DatabaseInfo);
   fmt.Printf("Creating project directory %s...\n", config.Projectname)
   project := NewProject(config.Projectname, config.SpringType, config.Company, config.Resource, config.Backend)
   CreateDirectories(project, domain)

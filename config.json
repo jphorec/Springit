@@ -3,5 +3,13 @@
   "company": "springit",
   "resource": "test",
   "springtype": "boot",
-  "backend": "mongodb"
+  "backend": "mongodb",
+  "dbInfo": {
+    "dbType": "postgres",
+    "dbUser": "joshhorecny",
+    "dbPassword": "",
+    "dbName": "basketballapp",
+    "dbTable": "player",
+    "dbUrl": "localhost"
+  }
 }

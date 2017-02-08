@@ -1,4 +1,4 @@
-package com.thd.test.domain;
+package com.thd.{{.Table}}.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -12,11 +12,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "test")
+@Table(name = "{{.Table}}")
 @Data
-public class Domain implements Identifiable<String> {
+public class {{.Table}} implements Identifiable<String> {
 
-{{ range . }}
+{{ range .Attributes }}
     @Column(name = "{{.AttributeName}}")
     private {{.AttributeType}} {{.AttributeName}};
 {{ end }}

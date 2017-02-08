@@ -80,7 +80,7 @@ func CreateDomainJavaFile(domain Domain, file string)(out []byte, error error){
   if err != nil {
     return nil, err
   }
-  err = t.Execute(&buf, domain.Attributes)
+  err = t.Execute(&buf, domain)
   if err != nil {
     return nil, err
   }
