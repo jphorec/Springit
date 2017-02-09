@@ -22,4 +22,9 @@ public class {{.ClassName}} implements Identifiable<{{.PrimaryType}}> {
     private {{.AttributeType}} {{.AttributeName}};
 {{ end }}
 
+  @Override
+  @JsonIgnore
+  public {{.PrimaryType}} getId() {
+    return {{.Primary}};
+  }
 }

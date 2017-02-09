@@ -1,15 +1,15 @@
 {
-  "projectname": "SpringitTest",
+  "projectname": "testuserservice",
   "company": "springit",
   "resource": "test",
   "springtype": "boot",
-  "backend": "mongodb",
+  "backend": "postgres",
   "dbInfo": {
     "dbType": "postgres",
     "dbUser": "josh.horecny",
     "dbPassword": "",
     "dbName": "Demo",
-    "dbTable": "films",
+    "dbTable": "player",
     "dbUrl": "localhost"
   }
 }

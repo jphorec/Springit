@@ -22,6 +22,7 @@ func connect(databaseInfo DatabaseInfo) Domain {
     domainModel := Domain{}
     domainModel.Table = databaseInfo.DBTable
     domainModel.ClassName = strings.Title(domainModel.Table)
+    domainModel.LowerClass = strings.ToLower(domainModel.Table)
     for rows.Next() {
         var column_name string
         var ordinal_position int
@@ -39,6 +40,7 @@ func connect(databaseInfo DatabaseInfo) Domain {
         if(ordinal_position == 1) {
             IsPrimary = true
             domainModel.PrimaryType = getAttrType(udt_name)
+            domainModel.Primary = attributeName
         }
         domainModel.Attributes = append(domainModel.Attributes, DomainAttribute{column_name, IsPrimary, attributeName, "set" + strings.Title(attributeName), "get" + strings.Title(attributeName), getAttrType(udt_name), ordinal_position, getNullableFlag(is_nullable)})
 
@@ -78,7 +80,9 @@ type Domain struct {
     Company    string `json:company`
     Table      string `json:table`
     ClassName  string `json:className`
+    LowerClass string `json:lowerClass`
     PrimaryType string `json:primaryType`
+    Primary string    `json:primary`
     Attributes []DomainAttribute    `json:"attributes"`
 }
 

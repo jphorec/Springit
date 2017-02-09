@@ -16,6 +16,14 @@ type Project struct {
   Backend string
   Permissions os.FileMode
   Directories []string
+  CurrentDirectory string
+  Dependencies []ProjectDependency
+}
+
+type ProjectDependency struct {
+  ProjectName string
+  Company string
+  Module string
 }
 
 func NewProject(projectName string, springType string, company string, resource string, backend string) Project {
@@ -62,10 +70,18 @@ func CreateDirectories(project Project, domain Domain) {
   f.Write(out)
 
   for _, directory := range project.Directories {
+      if directory != "application" {
+        project.Dependencies = append(project.Dependencies, ProjectDependency{ProjectName: project.ProjectName, Company: project.Company, Module: strings.Split(directory, "/")[1]})
+      }
+  }
+
+  for _, directory := range project.Directories {
     os.MkdirAll(directory, project.Permissions)
+
     if directory != "application" {
       // os.Chdir(directory)
-      subProject := Project{ProjectName: project.ProjectName, SpringType: project.SpringType, Company: project.Company, Resource: project.Resource, Backend: project.Backend, Permissions: 0755, Directories: []string{directory}}
+
+      subProject := Project{ProjectName: project.ProjectName, SpringType: project.SpringType, Company: project.Company, Resource: project.Resource, Backend: project.Backend, Permissions: 0755, Directories: []string{directory}, CurrentDirectory: strings.Split(directory, "/")[1], Dependencies: project.Dependencies}
       pomOut, pomErr := CreatePomXml(subProject, "../templates/poms/child_pom.xml")
       ErrorCheck(pomErr)
       WriteToFile(pomOut, directory + "/pom.xml")
