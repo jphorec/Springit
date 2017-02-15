@@ -126,49 +126,44 @@ func WriteToFile(input []byte, file string) {
 
   f.Write(input)
 }
+
+func GenerateModule(domain Domain, filePath string, template string) {
+  out, err := CreateJavaFile(domain, template)
+  ErrorCheck(err)
+  WriteToFile(out, filePath)
+}
+func GenerateModulePom(project Project, module string, filePath string) {
+  pomOut, pomErr := CreatePomXml(project, fmt.Sprintf("../templates/poms/%s_pom.xml", module))
+  ErrorCheck(pomErr)
+  WriteToFile(pomOut, filePath)
+}
 func CreateJavaDir(project Project, directory string, domain Domain) {
-  folder := strings.Split(directory, "/")[1]
-  root := directory + "/src/main/java/com/" + project.Company + "/" + project.ProjectName + "/"
-  path := root + folder
-  os.MkdirAll(path, project.Permissions)
-  switch folder {
-    case "domain":
-      domainOut, domainErr := CreateJavaFile(domain, "../templates/java/Domain.java")
-      ErrorCheck(domainErr)
-      WriteToFile(domainOut, path + fmt.Sprintf("/%s.java", domain.ClassName))
-    case "repository":
-      repoOut, repoErr := CreateJavaFile(domain, "../templates/java/Repository.java")
-      ErrorCheck(repoErr)
-      WriteToFile(repoOut, path + fmt.Sprintf("/%sRepository.java", domain.ClassName))
-    case "rest":
-      os.MkdirAll(path + "/controller", project.Permissions)
-      os.MkdirAll(directory + "/src/main/resources", project.Permissions)
-      os.MkdirAll(root + "config", project.Permissions)
-      ctrlOut, ctrlErr := CreateJavaFile(domain, "../templates/java/Controller.java")
-      ErrorCheck(ctrlErr)
-      WriteToFile(ctrlOut, path + fmt.Sprintf("/controller/%sController.java", domain.ClassName))
-      propOut, propErr := CreateJavaFile(domain, "../templates/java/application.properties")
-      ErrorCheck(propErr)
-      WriteToFile(propOut, directory + "/src/main/resources/application.properties")
-      bannerOut, bannerErr := CreateJavaFile(domain, "../templates/java/banner.txt")
-      ErrorCheck(bannerErr)
-      WriteToFile(bannerOut, directory + "/src/main/resources/banner.txt")
-      hatCfgOut, hatCfgErr := CreateJavaFile(domain, "../templates/java/HateoasConfig.java")
-      ErrorCheck(hatCfgErr)
-      WriteToFile(hatCfgOut, root + "/config/HateoasConfig.java")
-      webCfgOut, webCfgErr := CreateJavaFile(domain, "../templates/java/WebConfig.java")
-      ErrorCheck(webCfgErr)
-      WriteToFile(webCfgOut, root + "/config/WebConfig.java")
-      appOut, appErr := CreateJavaFile(domain, "../templates/java/Application.java")
-      ErrorCheck(appErr)
-      WriteToFile(appOut, root + "/Application.java")
-    case "service":
-      os.MkdirAll(path + "/hateoas", project.Permissions)
-      hOut, hErr := CreateJavaFile(domain, "../templates/java/GenericResourceAssembler.java")
-      ErrorCheck(hErr)
-      WriteToFile(hOut, path + "/hateoas/GenericResourceAssembler.java")
-      h2Out, h2Err := CreateJavaFile(domain, "../templates/java/GenericResourcesAssembler.java")
-      ErrorCheck(h2Err)
-      WriteToFile(h2Out, path + "/hateoas/GenericResourcesAssembler.java")
-  }
+    folder := strings.Split(directory, "/")[1]
+    root := directory + "/src/main/java/com/" + project.Company + "/" + project.ProjectName + "/"
+    path := root + folder
+    os.MkdirAll(path, project.Permissions)
+    GenerateModulePom(project, folder, directory + "/pom.xml")
+    switch folder {
+      case "domain":
+        GenerateModule(domain, path + fmt.Sprintf("/%s.java", domain.ClassName), "../templates/java/Domain.java")
+      case "repository":
+        GenerateModule(domain, path + fmt.Sprintf("/%sRepository.java", domain.ClassName), "../templates/java/Repository.java")
+      case "rest":
+        os.MkdirAll(path + "/controller", project.Permissions)
+        os.MkdirAll(directory + "/src/main/resources", project.Permissions)
+        os.MkdirAll(directory + "/src/main/asciidoc", project.Permissions)
+        os.MkdirAll(root + "config", project.Permissions)
+        GenerateModule(domain,  path + fmt.Sprintf("/controller/%sController.java", domain.ClassName), "../templates/java/Controller.java")
+        GenerateModule(domain,  directory + "/src/main/resources/application.properties", "../templates/java/application.properties")
+        GenerateModule(domain, directory + "/src/main/resources/banner.txt", "../templates/java/banner.txt")
+        GenerateModule(domain, root + "/config/HateoasConfig.java", "../templates/java/HateoasConfig.java")
+        GenerateModule(domain, root + "/config/WebConfig.java", "../templates/java/WebConfig.java")
+        GenerateModule(domain, root + "/config/DatabaseConfig.java", "../templates/java/DatabaseConfig.java")
+        GenerateModule(domain, root + "/Application.java", "../templates/java/Application.java")
+        GenerateModule(domain, directory + "/src/main/asciidoc/api-guide.asciidoc", "../templates/java/api-guide.asciidoc")
+      case "service":
+        os.MkdirAll(path + "/hateoas", project.Permissions)
+        GenerateModule(domain, path + "/hateoas/GenericResourceAssembler.java", "../templates/java/GenericResourceAssembler.java")
+        GenerateModule(domain, path + "/hateoas/GenericResourcesAssembler.java", "../templates/java/GenericResourcesAssembler.java")
+    }
 }

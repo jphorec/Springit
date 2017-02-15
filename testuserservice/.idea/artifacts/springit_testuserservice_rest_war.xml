@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="springit-testuserservice-rest:war">
-    <output-path>$PROJECT_DIR$/application/rest/target</output-path>
-    <root id="archive" name="springit-testuserservice-rest-1.0.1-SNAPSHOT.war">
-      <element id="artifact" artifact-name="springit-testuserservice-rest:war exploded" />
-    </root>
-  </artifact>
-</component>

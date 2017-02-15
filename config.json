@@ -6,8 +6,8 @@
     "backend": "postgres",
     "dbInfo": {
         "dbType": "postgres",
-        "dbUser": "postgres",
-        "dbPassword": "password",
+        "dbUser": "joshhorecny",
+        "dbPassword": "",
         "dbName": "basketballapp",
         "dbTable": "player",
         "dbUrl": "localhost"
