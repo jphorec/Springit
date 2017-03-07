@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(basePackages = "com.{{.Company}}.{{.ProjectName}}.repository")
 @EnableTransactionManagement
 public class DatabaseConfig {
-    @ConfigurationProperties(prefix = "datasource.postgres")
+    @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
     public DataSource dataSource() {
         return DataSourceBuilder

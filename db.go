@@ -23,6 +23,10 @@ func connect(databaseInfo DatabaseInfo) Domain {
     domainModel.Table = databaseInfo.DBTable
     domainModel.ClassName = strings.Title(domainModel.Table)
     domainModel.LowerClass = strings.ToLower(domainModel.Table)
+    domainModel.DBUrl = databaseInfo.DBUrl
+    domainModel.DBUser = databaseInfo.DBUser
+    domainModel.DBPW = databaseInfo.DBPassword
+    domainModel.DBName = databaseInfo.DBName
     for rows.Next() {
         var column_name string
         var ordinal_position int
@@ -84,6 +88,10 @@ type Domain struct {
     PrimaryType string `json:primaryType`
     Primary string    `json:primary`
     Attributes []DomainAttribute    `json:"attributes"`
+    DBUser string `json:dbUser`
+    DBPW string `json:dbPW`
+    DBUrl string `json:dbUrl`
+    DBName string 
 }
 
 type DomainAttribute struct {

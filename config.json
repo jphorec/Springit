@@ -1,15 +1,15 @@
 {
-    "projectname": "testuserservice",
+    "projectname": "leagueservice",
     "company": "springit",
     "resource": "test",
     "springtype": "boot",
     "backend": "postgres",
     "dbInfo": {
         "dbType": "postgres",
-        "dbUser": "joshhorecny",
-        "dbPassword": "",
+        "dbUser": "postgres",
+        "dbPassword": "password",
         "dbName": "basketballapp",
-        "dbTable": "player",
+        "dbTable": "league",
         "dbUrl": "localhost"
     }
 }
