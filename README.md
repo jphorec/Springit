@@ -1,5 +1,5 @@
 # Springit
-Simple Go application that take connects to a Postgres database and generates a multi-maven Spring Boot REST API based on the tables.
+Simple Go application that connects to a Postgres database and generates a multi-maven Spring Boot REST API based on the tables.
 
 The resulting API has: 
 * CRUD functionality 
